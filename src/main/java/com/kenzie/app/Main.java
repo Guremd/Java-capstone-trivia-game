@@ -3,6 +3,7 @@ package com.kenzie.app;
 // import necessary libraries
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kenzie.app.dto.CluesDTO;
 
@@ -35,6 +36,30 @@ public class Main {
         );
     }
 
+    public static CluesDTO getTrivia(String httpURL) throws JsonProcessingException {
+
+        String httpResponse;
+        CluesDTO clueObject;
+        httpResponse = CustomHttpClient.sendGET(httpURL);
+        ObjectMapper objectMapper = new ObjectMapper();
+        clueObject = objectMapper.readValue(httpResponse, CluesDTO.class);
+
+        return clueObject;
+    }
+
+    public static String getTriviaCategory(String URL, int ID) throws JsonProcessingException {
+        return getTrivia(URL).getClues().get(ID).getCategory().getTitle();
+    }
+
+    public static String getTriviaQuestion(String URL, int ID) throws JsonProcessingException {
+        return getTrivia(URL).getClues().get(ID).getQuestion();
+    }
+
+    public static String getTriviaAnswer(String URL, int ID) throws JsonProcessingException {
+        return getTrivia(URL).getClues().get(ID).getAnswer();
+    }
+
+
 
     public static void main(String[] args)  {
         //Write main execution code here
@@ -43,14 +68,6 @@ public class Main {
 
         try {
             final String TRIVIA_URL = "https://jservice.kenzie.academy/api/clues";
-
-            String httpResponse;
-            httpResponse = CustomHttpClient.sendGET(TRIVIA_URL);
-
-            //ObjectMapper and DTO read
-            ObjectMapper objectMapper = new ObjectMapper();
-            CluesDTO clueObject;
-            clueObject = objectMapper.readValue(httpResponse, CluesDTO.class);
 
             //Scanner properties
             Scanner scanner = new Scanner(System.in);
@@ -67,20 +84,20 @@ public class Main {
             for (int i = 0; i < 10; i++) {
                 //random trivia query from API
                 triviaID = random.nextInt(100);
-                System.out.println("Category: " + clueObject.getClues().get(triviaID).getCategory().getTitle());
-                System.out.println("Question: " + clueObject.getClues().get(triviaID).getQuestion());
+                System.out.println("Category: " + getTriviaCategory(TRIVIA_URL,triviaID));
+                System.out.println("Question: " + getTriviaQuestion(TRIVIA_URL,triviaID));
                 System.out.println("Please type your answer below:");
                 userInput = scanner.nextLine();
 
 
                 //compare user input to answer stored in the JSON; get points if correct, none if wrong
-                if (userInput.equalsIgnoreCase(String.valueOf(clueObject.getClues().get(triviaID).getAnswer()))) {
+                if (userInput.equalsIgnoreCase(String.valueOf(getTriviaAnswer(TRIVIA_URL,triviaID)))) {
                     totalScore = totalScore + 1;
                     System.out.println("DING DING DING! Correct!");
                     System.out.println("Your current score is " + totalScore + "\n");
                 } else {
                     System.out.println("Bzzt. Wrong answer.");
-                    System.out.println("The correct answer was " + clueObject.getClues().get(triviaID).getAnswer());
+                    System.out.println("The correct answer was " + getTriviaAnswer(TRIVIA_URL,triviaID));
                     System.out.println("Your current score is " + totalScore + "\n");
                 }
             }
