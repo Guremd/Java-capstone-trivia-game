@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "answer": "sheep",
+  "question": "Let's all flock to read Psalm 95, in which humans are compared to these animals",
+  "value": 200,
+  "categoryId": 1,
+  "gameId": 1,
+  "invalidCount": 0,
+  "category": {
+    "id": 1,
+    "title": "THE OLD TESTAMENT",
+    "canon": true
+  },
+  "game": {
+    "aired": "2004-09-06",
+    "canon": true
+  },
+  "canon": true
+}
