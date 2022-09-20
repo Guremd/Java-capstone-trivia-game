@@ -23,10 +23,9 @@ public class Main {
      */
 
     //TODO:try-catch for error input; custom exception when caught(?)
-    //TODO: create separate method/class for generating random trivia(?)
     //TODO: search a possible method to compare a part of a string for code to recognize the correct answer
-    //TODO: separate method for checking answer
     //TODO: generate trivia based on a certain category only
+    //TODO: download the whole API then get random questions from it instead of calling the server in each loop
 
     public static void welcomeMenu(){
         System.out.println("Random Trivia Game\n" +
